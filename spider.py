@@ -2,15 +2,10 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import sqlite3
 import re
-import time
-import random
-import webbrowser
 
 conn = sqlite3.connect('test.db')
 cursor = conn.cursor()
-p=0
-page=[n for n in range(1, 21)]
-random.shuffle(page)
+
 for i in page:
     html = urlopen("http://www.meishij.net/shiliao.php?st=3&cid=250&sortby=update&page="+str(i)) 
     bsObj = BeautifulSoup(html,'lxml')
@@ -20,10 +15,10 @@ for i in page:
         href=aobj.attrs['href']
         print(href)
         img=aobj.img.attrs['src']
-        newhtml=urlopen(href)
-        newbs=BeautifulSoup(newhtml,'lxml')
         while True:
             try:
+                newhtml=urlopen(href)
+                newbs=BeautifulSoup(newhtml,'lxml')
                 lis=newbs.find("ul",{"class":"clearfix"}).find_all("li")
                 break
             except:
